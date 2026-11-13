@@ -1,5 +1,7 @@
+mod json_builder;
 use std::collections::HashMap;
-use std::io::empty;
+
+use crate::json_builder::{CompleteBranch, RightBranch};
 
 fn main() {
     let mut letters: Vec<String> = Vec::new();
@@ -32,15 +34,62 @@ fn main() {
             if result.is_empty() {
                 let first_value = values[i];
                 let second_value = values[i + 1];
-                println!("{}", first_value + second_value);
+                let info_left_branch = json_builder::LeftBranch {
+                    value: first_value,
+                    key: keys[i].to_string(),
+                    has_relation: false,
+                    binary: 0
+                };
+                let info_right_branch = RightBranch {
+                    value: second_value,
+                    key: keys[i + 1].to_string(),
+                    has_relation: false,
+                    binary: 1
+                };
+                let complete_branch = CompleteBranch {
+                    value: first_value + second_value,
+                    right_branch: vec![info_right_branch],
+                    left_branch: vec![info_left_branch],
+                };
+
+                let json = serde_json::to_string_pretty(&complete_branch);
+                let file_name = format!("Structure {}.json", i);
+                std::fs::write(file_name, json.unwrap_or(0.to_string())).expect("TODO: panic message");
+
                 result.push(first_value + second_value);
             }else {
                let third_value = values[i + 1];
                let final_result = third_value + result[0];
+
+
+                let info_right_branch = RightBranch {
+                    value: result[0],
+                    key: keys[i].to_string(),
+                    has_relation: true,
+                    binary: 1
+
+                };
+                let info_left_branch = json_builder::LeftBranch {
+                    value: third_value,
+                    key: keys[i + 1].to_string(),
+                    has_relation: false,
+                    binary: 0
+                };
+                let complete_branch = CompleteBranch {
+                    value: result[0] + third_value,
+                    right_branch: vec![info_right_branch],
+                    left_branch: vec![info_left_branch],
+                };
+
+                let json = serde_json::to_string_pretty(&complete_branch);
+                let file_name = format!("Structure {}.json", i);
+                std::fs::write(file_name, json.unwrap_or(2.to_string())).expect("TODO: panic message");
+
                 result.remove(0);
-                println!("{}", final_result);
                 result.push(final_result);
             }
         }
+
     }
+
 }
