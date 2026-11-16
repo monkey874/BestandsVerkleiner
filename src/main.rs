@@ -1,5 +1,6 @@
 mod json_builder;
 pub mod make_bytes;
+pub mod jsonbuilder2;
 
 use std::collections::HashMap;
 use std::fs;
@@ -9,7 +10,7 @@ fn main() {
 
     let mut letters: Vec<String> = Vec::new();
 
-    let test_text = "appelflak";
+    let test_text = "";
     for letter in test_text.chars() {
         letters.push(letter.to_string());
     }
