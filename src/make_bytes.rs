@@ -15,7 +15,7 @@ pub fn make_byte() {
 
     let mut binary = String::new();
 
-    for letter in "telefoon".chars() {
+    for letter in "grasmaaier".chars() {
 
         if let Some(code) =
             find_code(
@@ -37,6 +37,7 @@ pub fn make_byte() {
     }
 
     let json = serde_json::to_string_pretty(&complete_group).unwrap();
+    let file_name = "Structure.json".to_string();
     std::fs::write("keys.json", json).expect("Unable to write file");
 
     println!("{}", binary);
