@@ -1,9 +1,12 @@
 mod json_builder;
-use std::collections::HashMap;
+pub mod make_bytes;
 
-use crate::json_builder::{CompleteBranch, RightBranch};
+use std::collections::HashMap;
+use std::fs;
+use crate::json_builder::{CompleteBranch, CompleteBranches, RightBranch};
 
 fn main() {
+
     let mut letters: Vec<String> = Vec::new();
 
     let test_text = "appell";
@@ -29,9 +32,14 @@ fn main() {
 
     let numbers_of_values = values.len() - 1;
     let mut result: Vec<i32> = Vec::new();
+    let mut complete_branches = CompleteBranches {
+        branches: Vec::new(),
+    };
+
     for (i, _) in values.iter().enumerate() {
         if i < numbers_of_values {
             if result.is_empty() {
+
                 let first_value = values[i];
                 let second_value = values[i + 1];
                 let info_left_branch = json_builder::LeftBranch {
@@ -52,9 +60,7 @@ fn main() {
                     left_branch: vec![info_left_branch],
                 };
 
-                let json = serde_json::to_string_pretty(&complete_branch);
-                let file_name = format!("Structure {}.json", i);
-                std::fs::write(file_name, json.unwrap_or(0.to_string())).expect("TODO: panic message");
+                complete_branches.branches.push(complete_branch);
 
                 result.push(first_value + second_value);
             }else {
@@ -81,15 +87,22 @@ fn main() {
                     left_branch: vec![info_left_branch],
                 };
 
-                let json = serde_json::to_string_pretty(&complete_branch);
-                let file_name = format!("Structure {}.json", i);
-                std::fs::write(file_name, json.unwrap_or(2.to_string())).expect("TODO: panic message");
+                complete_branches.branches.push(complete_branch);
+
 
                 result.remove(0);
                 result.push(final_result);
             }
+
         }
 
     }
+    complete_branches.branches.reverse();
+    let json = serde_json::to_string_pretty(&complete_branches).unwrap();
+    let file_name = "Structure.json".to_string();
+    std::fs::write(file_name, json).expect("TODO: panic message");
 
+    make_bytes::make_byte();
 }
+
+

@@ -13,11 +13,16 @@ pub struct RightBranch{
     pub value: i32,
     pub key: String,
     pub has_relation: bool
-
 }
+
 #[derive(Serialize, Deserialize)]
 pub struct CompleteBranch{
     pub value: i32,
     pub right_branch: Vec<RightBranch>,
     pub left_branch: Vec<LeftBranch>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct CompleteBranches{
+    pub branches: Vec<CompleteBranch>
 }
