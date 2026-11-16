@@ -1,5 +1,6 @@
 use crate::json_builder::{CompleteBranch, CompleteBranches};
 use std::fs::read_to_string;
+use std::io::BufRead;
 
 pub fn make_byte() {
     let json = std::fs::read_to_string("Structure.json").expect("kon bestand niet uitlezen");
@@ -8,50 +9,63 @@ pub fn make_byte() {
     let mut binary_string = String::from("");
     let letters = "appell";
 
-    for letter in letters.chars() {
-        for branch in &branches.branches {
-            for right_branch in &branch.right_branch {
-                if right_branch.key == letter.to_string() {
-                    let valueOffunction = herhaal(branch, letter);
-                    binary_string.push_str(&*valueOffunction.to_string());
-                    continue;
-                }
+    let mut binary = String::new();
 
-                if right_branch.has_relation == true {
-                    let branch_value = branch.value;
-                    let binary = right_branch.binary.clone();
-                    binary_string.push_str(&*binary.to_string());
+    for letter in "appelflak".chars() {
 
-                    if let Some(_result_branch) = branches
-                        .branches
-                        .iter()
-                        .find(|branch| branch.value == branch_value)
-                    {
-                        println!("{}", "Gevonden");
-                        println!("{}", _result_branch.value);
-                        let valueOffunction = herhaal(_result_branch, letter);
-                        binary_string.push_str(&*valueOffunction.to_string())
-                    }
+        if let Some(code) =
+            find_code(
+                &branches,
+                &branches.branches[0],
+                &letter.to_string(),
+                String::new(),
+            )
+        {
+            binary.push_str(&code);
+        }
+    }
+
+    println!("{}", binary);
+    std::fs::write("codes.txt", binary).expect("Unable to write file");
+}
+fn find_code(
+    branches: &CompleteBranches,
+    branch: &CompleteBranch,
+    target: &str,
+    path: String,
+) -> Option<String> {
+
+    for left in &branch.left_branch {
+        if left.key == target {
+            return Some(format!("{}0", path));
+        }
+    }
+
+    for right in &branch.right_branch {
+        if right.key == target {
+            return Some(format!("{}1", path));
+        }
+    }
+
+    for right in &branch.right_branch {
+        if right.has_relation {
+
+            if let Some(next_branch) = branches
+                .branches
+                .iter()
+                .find(|b| b.value == right.value)
+            {
+                if let Some(code) = find_code(
+                    branches,
+                    next_branch,
+                    target,
+                    format!("{}1", path),
+                ) {
+                    return Some(code);
                 }
             }
         }
     }
-    println!("{}", binary_string);
-    std::fs::write("codes.txt", binary_string).expect("kon json niet uitlezen");
-}
 
-fn herhaal(branch: &CompleteBranch, key: char) -> i32 {
-    for branchtaken in &branch.right_branch {
-        if branchtaken.key == key.to_string() {
-            println!("{}", "Ik zit in de if-statement");
-            println!("{}", branchtaken.binary);
-            println!("{}", key.to_string());
-            let binary = branchtaken.binary.clone();
-
-            return binary;
-        }else {
-            println!("{}", "Kon niks vinden".to_owned() + &*key.to_string());
-        }
-    }
-    return 0;
+    None
 }

@@ -9,7 +9,7 @@ fn main() {
 
     let mut letters: Vec<String> = Vec::new();
 
-    let test_text = "appell";
+    let test_text = "appelflak";
     for letter in test_text.chars() {
         letters.push(letter.to_string());
     }
@@ -36,6 +36,7 @@ fn main() {
         branches: Vec::new(),
     };
 
+    let mut used_keys: Vec<String> = Vec::new();
     for (i, _) in values.iter().enumerate() {
         if i < numbers_of_values {
             if result.is_empty() {
@@ -44,16 +45,19 @@ fn main() {
                 let second_value = values[i + 1];
                 let info_left_branch = json_builder::LeftBranch {
                     value: first_value,
-                    key: keys[i].to_string(),
+                    key: get_key_or_none(&*keys[i], &mut used_keys),
                     has_relation: false,
                     binary: 0
                 };
+                used_keys.push(keys[i].to_string());
                 let info_right_branch = RightBranch {
                     value: second_value,
-                    key: keys[i + 1].to_string(),
+                    key: get_key_or_none(&*keys[i + 1], &mut used_keys),
                     has_relation: false,
                     binary: 1
                 };
+
+                used_keys.push(keys[i + 1].to_string());
                 let complete_branch = CompleteBranch {
                     value: first_value + second_value,
                     right_branch: vec![info_right_branch],
@@ -70,17 +74,20 @@ fn main() {
 
                 let info_right_branch = RightBranch {
                     value: result[0],
-                    key: keys[i].to_string(),
+                    key: get_key_or_none(&*keys[i], &mut used_keys),
                     has_relation: true,
                     binary: 1
 
                 };
+
+                used_keys.push(keys[i].to_string());
                 let info_left_branch = json_builder::LeftBranch {
                     value: third_value,
-                    key: keys[i + 1].to_string(),
+                    key: get_key_or_none(&*keys[i + 1], &mut used_keys),
                     has_relation: false,
                     binary: 0
                 };
+                used_keys.push(keys[i + 1].to_string());
                 let complete_branch = CompleteBranch {
                     value: result[0] + third_value,
                     right_branch: vec![info_right_branch],
@@ -103,6 +110,14 @@ fn main() {
     std::fs::write(file_name, json).expect("TODO: panic message");
 
     make_bytes::make_byte();
+}
+fn get_key_or_none(key: &str, used_keys: &mut Vec<String>) -> String {
+    if used_keys.contains(&key.to_string()) {
+        "none".to_string()
+    } else {
+        used_keys.push(key.to_string());
+        key.to_string()
+    }
 }
 
 
