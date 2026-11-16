@@ -1,0 +1,118 @@
+{
+  "branches": [
+    {
+      "value": 10,
+      "right_branch": [
+        {
+          "binary": 1,
+          "value": 7,
+          "key": "none",
+          "has_relation": true
+        }
+      ],
+      "left_branch": [
+        {
+          "binary": 0,
+          "value": 3,
+          "key": "a",
+          "has_relation": false
+        }
+      ]
+    },
+    {
+      "value": 7,
+      "right_branch": [
+        {
+          "binary": 1,
+          "value": 5,
+          "key": "none",
+          "has_relation": true
+        }
+      ],
+      "left_branch": [
+        {
+          "binary": 0,
+          "value": 2,
+          "key": "r",
+          "has_relation": false
+        }
+      ]
+    },
+    {
+      "value": 5,
+      "right_branch": [
+        {
+          "binary": 1,
+          "value": 4,
+          "key": "none",
+          "has_relation": true
+        }
+      ],
+      "left_branch": [
+        {
+          "binary": 0,
+          "value": 1,
+          "key": "s",
+          "has_relation": false
+        }
+      ]
+    },
+    {
+      "value": 4,
+      "right_branch": [
+        {
+          "binary": 1,
+          "value": 3,
+          "key": "none",
+          "has_relation": true
+        }
+      ],
+      "left_branch": [
+        {
+          "binary": 0,
+          "value": 1,
+          "key": "e",
+          "has_relation": false
+        }
+      ]
+    },
+    {
+      "value": 3,
+      "right_branch": [
+        {
+          "binary": 1,
+          "value": 2,
+          "key": "none",
+          "has_relation": true
+        }
+      ],
+      "left_branch": [
+        {
+          "binary": 0,
+          "value": 1,
+          "key": "m",
+          "has_relation": false
+        }
+      ]
+    },
+    {
+      "value": 2,
+      "right_branch": [
+        {
+          "binary": 1,
+          "value": 1,
+          "key": "g",
+          "has_relation": false
+        }
+      ],
+      "left_branch": [
+        {
+          "binary": 0,
+          "value": 1,
+          "key": "i",
+          "has_relation": false
+        }
+      ]
+    }
+  ]
+}

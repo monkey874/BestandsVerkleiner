@@ -2,6 +2,8 @@ mod json_builder;
 pub mod make_bytes;
 pub mod jsonbuilder2;
 pub mod decode_binary_file;
+pub mod biteToByte;
+pub mod jsonbuilder3;
 
 use std::collections::HashMap;
 use std::fs;
@@ -112,6 +114,7 @@ fn main() {
     std::fs::write(file_name, json).expect("TODO: panic message");
 
     make_bytes::make_byte();
+    biteToByte::main();
     decode_binary_file::main();
 }
 fn get_key_or_none(key: &str, used_keys: &mut Vec<String>) -> String {
