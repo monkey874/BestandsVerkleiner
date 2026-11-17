@@ -1,5 +1,5 @@
 /target
 /Output
-.txt
-.json
-.huff
+*.txt
+*.json
+*.huff
