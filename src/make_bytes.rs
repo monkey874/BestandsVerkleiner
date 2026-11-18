@@ -1,13 +1,13 @@
-use crate::json_builder::{CompleteBranch, CompleteBranches};
-use crate::jsonbuilder2;
-use crate::jsonbuilder2::{CompleteGroup};
+use crate::json_three::{CompleteBranch, CompleteBranches};
 
+use crate::json_models::json_three;
+use crate::json_models::json_key_references;
 pub fn make_byte() {
-    let json = std::fs::read_to_string("Structure.json").expect("kon bestand niet uitlezen");
-    let mut complete_group = jsonbuilder2::Group {
+    let json = std::fs::read_to_string("src/output/json/Structure.json").expect("kon bestand niet uitlezen");
+    let mut complete_group = json_key_references::Group {
         group: Vec::new(),
     };
-    let branches: CompleteBranches = serde_json::from_str(&json).expect("kon json niet uitlezen");
+    let branches: json_three::CompleteBranches = serde_json::from_str(&json).expect("kon json niet uitlezen");
     let mut binary = String::new();
 
     for letter in "appeltaart".chars() {
@@ -21,9 +21,9 @@ pub fn make_byte() {
             )
         {
             binary.push_str(&code);
-            let group = CompleteGroup {
+            let group = json_key_references::CompleteGroup {
                 key: letter,
-                bytes: code,
+                bites: code,
             };
 
             complete_group.group.push(group);
@@ -32,10 +32,10 @@ pub fn make_byte() {
     }
 
     let json = serde_json::to_string_pretty(&complete_group).unwrap();
-    std::fs::write("keys.json", json).expect("Unable to write file");
+    std::fs::write("src/output/json/keys.json", json).expect("Unable to write file");
 
     println!("{}", binary);
-    std::fs::write("codes.txt", binary).expect("Unable to write file");
+    std::fs::write("src/output/txt/codes.txt", binary).expect("Unable to write file");
 }
 fn find_code(
     branches: &CompleteBranches,

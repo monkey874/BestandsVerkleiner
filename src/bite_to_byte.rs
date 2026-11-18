@@ -1,8 +1,8 @@
-use crate::jsonbuilder3;
-use crate::jsonbuilder3::HuffFile;
+use crate::json_models::json_byte_map;
+use crate::json_models::json_byte_map::BytesMap;
 
 pub fn main() {
-    let text = std::fs::read_to_string("codes.txt").expect("kon bestand niet uitlezen");
+    let text = std::fs::read_to_string("src/output/txt/codes.txt").expect("kon bestand niet uitlezen");
     let len = text.len();
     let bits = text;
 
@@ -19,9 +19,9 @@ pub fn main() {
         bytes.push(byte);
     }
 
-    let byte = jsonbuilder3::HuffFile {
+    let byte = json_byte_map::BytesMap {
         bit_length: len,
-        data: bytes,
+        bytes,
     };
     let json = serde_json::to_string_pretty(&byte).unwrap();
     std::fs::write("bestand.huff", json)
@@ -30,9 +30,9 @@ pub fn main() {
 
 
     let keys = std::fs::read_to_string("bestand.huff").expect("kon bestand niet uitlezen");
-    let group: HuffFile = serde_json::from_str(&keys).expect("kon json niet uitlezen");
+    let group: BytesMap = serde_json::from_str(&keys).expect("kon json niet uitlezen");
     let mut all_bites = String::from("");
-    for byte in group.data {
+    for byte in group.bytes {
 
 
          println!("Bits naar byte:");

@@ -1,5 +1,5 @@
 /target
-/Output
+/src/output
 *.txt
 *.json
 *.huff

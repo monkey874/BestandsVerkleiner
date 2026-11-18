@@ -2,8 +2,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 pub struct CompleteGroup{
     pub key: char,
-    pub bytes: String
-
+    pub bites: String
 }
 
 #[derive(Serialize, Deserialize)]

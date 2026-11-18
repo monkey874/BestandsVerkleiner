@@ -1,13 +1,10 @@
-mod json_builder;
+mod json_models;
+use json_models::json_three;
+
 pub mod make_bytes;
-pub mod jsonbuilder2;
 pub mod decode_binary_file;
 pub mod bite_to_byte;
-pub mod jsonbuilder3;
-
 use std::collections::HashMap;
-use crate::json_builder::{CompleteBranch, CompleteBranches, RightBranch};
-
 fn main() {
 
     let mut letters: Vec<String> = Vec::new();
@@ -35,7 +32,7 @@ fn main() {
 
     let numbers_of_values = values.len() - 1;
     let mut result: Vec<i32> = Vec::new();
-    let mut complete_branches = CompleteBranches {
+    let mut complete_branches = json_three::CompleteBranches {
         branches: Vec::new(),
     };
 
@@ -46,14 +43,14 @@ fn main() {
 
                 let first_value = values[i];
                 let second_value = values[i + 1];
-                let info_left_branch = json_builder::LeftBranch {
+                let info_left_branch = json_three::LeftBranch {
                     value: first_value,
                     key: get_key_or_none(&*keys[i], &mut used_keys),
                     has_relation: false,
                     binary: 0
                 };
                 used_keys.push(keys[i].to_string());
-                let info_right_branch = RightBranch {
+                let info_right_branch = json_three::RightBranch {
                     value: second_value,
                     key: get_key_or_none(&*keys[i + 1], &mut used_keys),
                     has_relation: false,
@@ -61,7 +58,7 @@ fn main() {
                 };
 
                 used_keys.push(keys[i + 1].to_string());
-                let complete_branch = CompleteBranch {
+                let complete_branch = json_three::CompleteBranch {
                     value: first_value + second_value,
                     right_branch: vec![info_right_branch],
                     left_branch: vec![info_left_branch],
@@ -75,7 +72,7 @@ fn main() {
                let final_result = third_value + result[0];
 
 
-                let info_right_branch = RightBranch {
+                let info_right_branch = json_three::RightBranch {
                     value: result[0],
                     key: get_key_or_none(&*keys[i], &mut used_keys),
                     has_relation: true,
@@ -84,14 +81,14 @@ fn main() {
                 };
 
                 used_keys.push(keys[i].to_string());
-                let info_left_branch = json_builder::LeftBranch {
+                let info_left_branch = json_three::LeftBranch {
                     value: third_value,
                     key: get_key_or_none(&*keys[i + 1], &mut used_keys),
                     has_relation: false,
                     binary: 0
                 };
                 used_keys.push(keys[i + 1].to_string());
-                let complete_branch = CompleteBranch {
+                let complete_branch = json_three::CompleteBranch {
                     value: result[0] + third_value,
                     right_branch: vec![info_right_branch],
                     left_branch: vec![info_left_branch],
@@ -109,7 +106,7 @@ fn main() {
     }
     complete_branches.branches.reverse();
     let json = serde_json::to_string_pretty(&complete_branches).unwrap();
-    let file_name = "Structure.json".to_string();
+    let file_name = "src/output/json/Structure.json".to_string();
     std::fs::write(file_name, json).expect("TODO: panic message");
 
     make_bytes::make_byte();
