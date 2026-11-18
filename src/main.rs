@@ -2,18 +2,17 @@ mod json_builder;
 pub mod make_bytes;
 pub mod jsonbuilder2;
 pub mod decode_binary_file;
-pub mod biteToByte;
+pub mod bite_to_byte;
 pub mod jsonbuilder3;
 
 use std::collections::HashMap;
-use std::fs;
 use crate::json_builder::{CompleteBranch, CompleteBranches, RightBranch};
 
 fn main() {
 
     let mut letters: Vec<String> = Vec::new();
 
-    let test_text = "grasmaaier";
+    let test_text = "appeltaart";
     for letter in test_text.chars() {
         letters.push(letter.to_string());
     }
@@ -114,7 +113,7 @@ fn main() {
     std::fs::write(file_name, json).expect("TODO: panic message");
 
     make_bytes::make_byte();
-    biteToByte::main();
+    bite_to_byte::main();
     decode_binary_file::main();
 }
 fn get_key_or_none(key: &str, used_keys: &mut Vec<String>) -> String {

@@ -1,8 +1,6 @@
 use crate::json_builder::{CompleteBranch, CompleteBranches};
-use std::fs::read_to_string;
-use std::io::BufRead;
 use crate::jsonbuilder2;
-use crate::jsonbuilder2::{CompleteGroup, Group};
+use crate::jsonbuilder2::{CompleteGroup};
 
 pub fn make_byte() {
     let json = std::fs::read_to_string("Structure.json").expect("kon bestand niet uitlezen");
@@ -10,12 +8,9 @@ pub fn make_byte() {
         group: Vec::new(),
     };
     let branches: CompleteBranches = serde_json::from_str(&json).expect("kon json niet uitlezen");
-    let mut binary_string = String::from("");
-    let letters = "appell";
-
     let mut binary = String::new();
 
-    for letter in "grasmaaier".chars() {
+    for letter in "appeltaart".chars() {
 
         if let Some(code) =
             find_code(
@@ -26,18 +21,17 @@ pub fn make_byte() {
             )
         {
             binary.push_str(&code);
-            let CompleteGroup = CompleteGroup {
+            let group = CompleteGroup {
                 key: letter,
                 bytes: code,
             };
 
-            complete_group.group.push(CompleteGroup);
+            complete_group.group.push(group);
 
         }
     }
 
     let json = serde_json::to_string_pretty(&complete_group).unwrap();
-    let file_name = "Structure.json".to_string();
     std::fs::write("keys.json", json).expect("Unable to write file");
 
     println!("{}", binary);

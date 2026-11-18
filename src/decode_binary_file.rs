@@ -1,6 +1,4 @@
-use crate::json_builder::CompleteBranches;
-use crate::jsonbuilder2;
-use crate::jsonbuilder2::{CompleteGroup, Group};
+use crate::jsonbuilder2::{Group};
 
 pub fn main() {
     let mut text = std::fs::read_to_string("codes.txt").expect("kon bestand niet uitlezen");

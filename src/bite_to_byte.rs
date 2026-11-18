@@ -1,9 +1,8 @@
-use crate::jsonbuilder2::Group;
 use crate::jsonbuilder3;
 use crate::jsonbuilder3::HuffFile;
 
 pub fn main() {
-    let mut text = std::fs::read_to_string("codes.txt").expect("kon bestand niet uitlezen");
+    let text = std::fs::read_to_string("codes.txt").expect("kon bestand niet uitlezen");
     let len = text.len();
     let bits = text;
 
